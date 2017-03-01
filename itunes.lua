@@ -74,4 +74,22 @@ local function repeatOne()
 end
 itunes.repeatOne = repeatOne
 
+local function playLater()
+  selectMenuItem({"Song", "Play Later"})
+end
+
+local playLaterHotkey = hs.hotkey.new({"cmd"}, ";", playLater)
+local watcher = hs.application.watcher.new(function(name, event, application)
+    if application == app() then
+      if event == hs.application.watcher.activated then
+        playLaterHotkey:enable()
+      end
+      if event == hs.application.watcher.deactivated then
+        playLaterHotkey:disable()
+      end
+    end
+end)
+watcher:start()
+itunes.watcher = watcher
+
 return itunes
