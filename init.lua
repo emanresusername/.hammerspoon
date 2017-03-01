@@ -1,5 +1,5 @@
 -- auto reload when config changes
-local hammerspoonHomeWatcher = hs.pathwatcher.new(os.getenv("HOME") .. "/.hammerspoon/", hs.reload):start()
+hammerspoonHomeWatcher = hs.pathwatcher.new(os.getenv("HOME") .. "/.hammerspoon/", hs.reload):start()
 
 -- command line interface
 require("hs.ipc")
@@ -10,6 +10,7 @@ require("polluri")
 
 doc = require("hs.doc").fromRegisteredFiles()
 
+application = require("application")
 caffeinate = require("caffeinate")
 itunes = require("itunes")
 dirhttpserver = require("dirhttpserver")
@@ -28,3 +29,15 @@ function alertSayNotify(message)
   hs.notify.show(message, message, message)
   hs.speech.new():speak(message)
 end
+
+-- for a flash button or something that i can't click with vimperator/vimfx (fwp)
+application.hotkey(
+  application.get("org.mozilla.firefox"),
+  {"cmd"},
+  ";",
+  function(app)
+    hs.eventtap.leftClick(
+      app:mainWindow():frame().xy + hs.geometry.point(294.5546875,298.390625)
+    )
+  end
+)

@@ -1,3 +1,5 @@
+local application = require("application")
+
 local log = hs.logger.new("itunes", "info")
 
 local itunes = hs.itunes
@@ -23,7 +25,7 @@ function itunes.fade(interval, whenSilent)
 end
 
 local function app()
-  return hs.application.get("com.apple.iTunes")
+  return application.get("com.apple.iTunes")
 end
 itunes.app = app
 
@@ -78,18 +80,6 @@ local function playLater()
   selectMenuItem({"Song", "Play Later"})
 end
 
-local playLaterHotkey = hs.hotkey.new({"cmd"}, ";", playLater)
-local watcher = hs.application.watcher.new(function(name, event, application)
-    if application == app() then
-      if event == hs.application.watcher.activated then
-        playLaterHotkey:enable()
-      end
-      if event == hs.application.watcher.deactivated then
-        playLaterHotkey:disable()
-      end
-    end
-end)
-watcher:start()
-itunes.watcher = watcher
+application.hotkey(app(), {"cmd"}, ";", playLater)
 
 return itunes
