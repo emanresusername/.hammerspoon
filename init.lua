@@ -41,3 +41,15 @@ application.hotkey(
     )
   end
 )
+
+-- auto focus on password input
+application.hotkey(
+  application.get("com.google.Chrome"),
+  {"cmd"},
+  ",",
+  function(app)
+    hs.eventtap.leftClick(
+      app:findWindow("Authy"):frame().xy + hs.geometry.point(175.54296875,258.7734375)
+    )
+  end
+)
