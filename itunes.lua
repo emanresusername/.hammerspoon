@@ -24,6 +24,26 @@ function itunes.fade(interval, whenSilent)
   return hs.timer.doUntil(silent, lowerVolume, interval)
 end
 
+function itunes.playwake(at, interval)
+  return hs.timer.doAt(
+    at,
+    function()
+      itunes.setVolume(0)
+      itunes.play()
+      hs.timer.doUntil(
+        function()
+          return itunes.getVolume() >= 100
+        end,
+        function()
+          local volume = itunes.getVolume() + 1
+          log.i("playwake: " .. volume)
+          itunes.setVolume(volume)
+        end,
+        interval
+      )
+  end)
+end
+
 local function app()
   return application.get("com.apple.iTunes")
 end
