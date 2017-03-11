@@ -13,6 +13,7 @@ doc = require("hs.doc").fromRegisteredFiles()
 application = require("application")
 caffeinate = require("caffeinate")
 itunes = require("itunes")
+timer = require("timer")
 dirhttpserver = require("dirhttpserver")
 mouse = require("mouse")
 
