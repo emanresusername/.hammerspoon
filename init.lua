@@ -44,7 +44,7 @@ application.hotkey(
   ";",
   function(app)
     hs.eventtap.leftClick(
-      app:mainWindow():frame().xy + hs.geometry.point(294.5546875,298.390625)
+      app:mainWindow():frame().xy + hs.geometry.point(264.5546875,328.390625)
     )
   end
 )
