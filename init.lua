@@ -1,5 +1,7 @@
--- auto reload when config changes
-hammerspoonHomeWatcher = hs.pathwatcher.new(os.getenv("HOME") .. "/.hammerspoon/", hs.reload):start()
+inspect = hs.inspect
+fnutils = hs.fnutils
+
+require("reloader"):start()
 
 -- command line interface
 require("hs.ipc")
@@ -16,9 +18,6 @@ itunes = require("itunes")
 timer = require("timer")
 dirhttpserver = require("dirhttpserver")
 mouse = require("mouse")
-
-inspect = hs.inspect
-fnutils = hs.fnutils
 
 function fadeItunesThenSleepScreen(interval)
   return itunes.fade(interval, caffeinate.sleepScreen)
