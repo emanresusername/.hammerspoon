@@ -21,6 +21,8 @@ timer = require("timer")
 dirhttpserver = require("dirhttpserver")
 mouse = require("mouse")
 history = require("history")
+console = require("console")
+console.alpha = 0.25
 
 function fadeItunesThenSleepScreen(interval)
   return itunes.fade(interval, caffeinate.sleepScreen)
@@ -58,6 +60,42 @@ application.hotkey(
     )
   end
 )
+
+-- inspired by _ getting last returned value in ruby console
+-- and/or !# getting a certain command number in various shells
+function _(index, substring)
+  if type(index) == "string" then
+    -- use last command in history matching substring
+    substring = index
+    index = 0
+  else
+    -- use last command in history
+    index = index or 0
+  end
+
+  local list
+  if substring then
+    list = history.search(substring)
+  else
+    list = history.get()
+  end
+
+  local last = #list
+
+  if index < 1 then
+    -- fix for non-negative index in the command list
+    index = last + index
+  end
+
+  if index < 1 then
+    -- use first if before the first
+    index = 1
+  elseif index > last then
+      -- use last if after the last
+      index = last
+  end
+  console.keyStrokes(list[index])
+end
 
 history.load()
 hs.shutdownCallback = history.persist

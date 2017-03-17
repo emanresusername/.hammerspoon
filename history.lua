@@ -14,13 +14,15 @@ local function file(mode)
 end
 history.file = file
 
--- don't persist lines with leading spaces to history
 -- inspired by zsh HIST_IGNORE_SPACE http://zsh.sourceforge.net/Doc/Release/Options.html
--- NOTE: could remove entries from previous sessions where this was false
-history.ignoreSpace = true
-local function ignoreSpace()
-  return history.ignoreSpace
+-- NOTE: changing this could cause removal of entries persisted in previous sessions
+local function shouldPersist(text)
+  local firstChar = text:sub(1,1)
+  return firstChar ~= " " and
+    firstChar ~= "_" and
+    not text:match("hs%.reload%(%)")
 end
+history.shouldPersist = shouldPersist
 
 local console = hs.console
 local getHistory = console.getHistory
@@ -30,7 +32,7 @@ local fnutils = hs.fnutils
 function history.persist()
   local file = file("w+")
   fnutils.ieach(getHistory(), function(item)
-                  if not ignoreSpace() or item:sub(1,1) ~= " " then
+                  if shouldPersist(item) then
                     io.output(file):write(item .. "\n")
                   end
   end)
