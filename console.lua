@@ -14,6 +14,7 @@ function console.keyStrokes(text)
   hs.eventtap.keyStrokes(text, app())
 end
 
+hs.openConsole(false)
 application.hotkey(
   app(),
   {"cmd"},
