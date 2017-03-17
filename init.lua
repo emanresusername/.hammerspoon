@@ -1,6 +1,8 @@
 inspect = hs.inspect
 fnutils = hs.fnutils
 
+log = hs.logger.new("main", "info")
+
 require("reloader"):start()
 
 -- command line interface
@@ -23,8 +25,10 @@ function fadeItunesThenSleepScreen(interval)
   return itunes.fade(interval, caffeinate.sleepScreen)
 end
 
-function alertSayNotify(message)
-  message = tostring(message)
+-- cause sometimes 1 just isn't enough
+function logAlertNotifySpeak(message)
+  message = inspect(message)
+  log.i(message)
   hs.alert(message)
   hs.notify.show(message, message, message)
   hs.speech.new():speak(message)
