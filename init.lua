@@ -20,6 +20,7 @@ itunes = require("itunes")
 timer = require("timer")
 dirhttpserver = require("dirhttpserver")
 mouse = require("mouse")
+history = require("history")
 
 function fadeItunesThenSleepScreen(interval)
   return itunes.fade(interval, caffeinate.sleepScreen)
@@ -57,3 +58,6 @@ application.hotkey(
     )
   end
 )
+
+history.load()
+hs.shutdownCallback = history.persist
