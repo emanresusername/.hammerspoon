@@ -1,6 +1,7 @@
-function hs.caffeinate.sleepScreen()
+local function sleepScreen()
   return hs.execute("pmset displaysleepnow")
 end
+hs.caffeinate.sleepScreen = sleepScreen
 
 function hs.caffeinate.sleepScreenAt(time)
   return hs.timer.doAt(time, sleepScreen)
