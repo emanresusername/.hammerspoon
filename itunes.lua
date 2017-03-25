@@ -3,8 +3,10 @@ local application = require("application")
 local log = hs.logger.new("itunes", "info")
 
 local itunes = hs.itunes
+local timer = hs.timer
+local partial = hs.fnutils.partial
 
-function itunes.fade(interval, whenSilent)
+local function fade(interval, whenSilent)
   initialVolume = itunes.getVolume()
   volume = initialVolume
   silent = function() return volume <= 0 end
@@ -21,13 +23,22 @@ function itunes.fade(interval, whenSilent)
       itunes.setVolume(volume)
     end
   end
-  return hs.timer.doUntil(silent, lowerVolume, interval)
+  return timer.doUntil(silent, lowerVolume, interval)
+end
+itunes.fade = fade
+
+function itunes.fadeAt(at, interval, whenSilent)
+  return timer.doAt(at, partial(fade, interval, whenSilent))
+end
+
+function itunes.fadeIn(seconds, interval, whenSilent)
+  return timer.doAfter(seconds, partial(fade, interval, whenSilent))
 end
 
 local function playwake(interval)
   itunes.setVolume(0)
   itunes.play()
-  hs.timer.doUntil(
+  timer.doUntil(
     function()
       return itunes.getVolume() >= 100
     end,
@@ -42,11 +53,11 @@ end
 itunes.playwake = playwake
 
 function itunes.playwakeIn(seconds, interval)
-  return hs.timer.doAfter(seconds, playwake)
+  return timer.doAfter(seconds, partial(playwake, interval))
 end
 
 function itunes.playwakeAt(at, interval)
-  return hs.timer.doAt(at, playwake)
+  return timer.doAt(at, partial(playwake, interval))
 end
 
 local function app()
