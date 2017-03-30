@@ -21,8 +21,11 @@ timer = require("timer")
 dirhttpserver = require("dirhttpserver")
 mouse = require("mouse")
 history = require("history")
+
 console = require("console")
 console.alpha = 0.25
+
+factchick = require("factchick")
 
 function fadeItunesThenSleepScreen(interval)
   return itunes.fade(interval, caffeinate.sleepScreen)
