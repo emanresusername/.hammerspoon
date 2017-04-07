@@ -7,20 +7,18 @@ local timer = hs.timer
 local partial = hs.fnutils.partial
 
 local function fade(interval, whenSilent)
-  initialVolume = itunes.getVolume()
-  volume = initialVolume
-  silent = function() return volume <= 0 end
+  local function volume() return itunes.getVolume() end
+  initialVolume = volume()
+  local function silent() return volume() <= 0 end
   lowerVolume = function()
-    volume = volume - 1
-    log.i("fade: " .. volume)
-    if volume <= 0 then
+    itunes.setVolume(volume() - 1)
+    log.i("fade: " .. volume())
+    if volume() <= 0 then
       itunes.pause()
       itunes.setVolume(initialVolume)
       if whenSilent then
         whenSilent()
       end
-    else
-      itunes.setVolume(volume)
     end
   end
   return timer.doUntil(silent, lowerVolume, interval)
