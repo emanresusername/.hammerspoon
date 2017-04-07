@@ -10,10 +10,11 @@ local function fade(interval, whenSilent)
   local function volume() return itunes.getVolume() end
   initialVolume = volume()
   local function silent() return volume() <= 0 end
-  lowerVolume = function()
+  lowerVolume = function(timer)
     itunes.setVolume(volume() - 1)
     log.i("fade: " .. volume())
     if volume() <= 0 then
+      timer:stop()
       itunes.pause()
       itunes.setVolume(initialVolume)
       if whenSilent then
