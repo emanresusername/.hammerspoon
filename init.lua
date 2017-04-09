@@ -21,6 +21,7 @@ timer = require("timer")
 dirhttpserver = require("dirhttpserver")
 mouse = require("mouse")
 history = require("history")
+audiodevice = require("audiodevice")
 
 console = require("console")
 console.alpha = 0.25
