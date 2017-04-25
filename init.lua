@@ -12,7 +12,7 @@ hs.ipc.cliInstall()
 require("windowhotkeys")
 require("polluri")
 
-doc = require("hs.doc").fromRegisteredFiles()
+doc = require("hs.doc")
 
 application = require("application")
 caffeinate = require("caffeinate")
