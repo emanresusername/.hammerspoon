@@ -101,5 +101,8 @@ function _(index, substring)
   console.keyStrokes(list[index])
 end
 
+-- defeat paste blocking
+hs.hotkey.bind({"cmd", "alt"}, "V", function() hs.eventtap.keyStrokes(hs.pasteboard.getContents()) end)
+
 history.load()
 hs.shutdownCallback = history.persist
